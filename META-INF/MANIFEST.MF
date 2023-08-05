@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: xyz.yooniks.cproxy.Proxy
+Main-Class: ru.crashdami.emortality.Proxy
 
