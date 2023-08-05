@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class AutoLoginCommand extends Command {
 
     public AutoLoginCommand() {
-        super("autologin", "Wlacz/wylacz autologowanie na serwerach", ",autologin [bots/runnables]",
+        super("autologin", "Включение/отключение автологирования на серверах", ",autologin [bots/runnables]",
                 Group.PLAYER, "botsautologin", "autoregister");
     }
 

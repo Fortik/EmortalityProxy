@@ -14,25 +14,25 @@ public class AutoCaptchaCommand extends Command {
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (args.length < 2) {
-            p.sendMessage("$p &7Poprawne uzycie: &a" + getUsage());
+            p.sendMessage("$p &7Правильное использование: &a" + getUsage());
             return;
         }
         final String type = args[1];
         if (type.equalsIgnoreCase("bots") || type.equalsIgnoreCase("bot")) {
             if (p.botOptions.autoCaptcha) {
-                p.sendMessage("$p &7AutoCaptcha botow &cwylaczona&7!");
+                p.sendMessage("$p &7AutoCaptcha ботов &cвыключена &7!");
                 p.botOptions.autoCaptcha = false;
                 return;
             }
-            p.sendMessage("$p &7AutoCaptcha botow &awlaczona&7!");
+            p.sendMessage("$p &7AutoCaptcha ботов &aвключено &7!");
             p.botOptions.autoCaptcha = true;
         } else {
             if (p.playerOptions.autoCaptcha) {
-                p.sendMessage("$p &7AutoCaptcha playera&c wylaczona&7!");
+                p.sendMessage("$p &7AutoCaptcha игрока &cотключена &7!");
                 p.playerOptions.autoCaptcha = false;
                 return;
             }
-            p.sendMessage("$p &7AutoCaptcha playera &awlaczona&7!");
+            p.sendMessage("$p &7AutoCaptcha игрока &aвключена&7!");
             p.playerOptions.autoCaptcha = true;
         }
     }
