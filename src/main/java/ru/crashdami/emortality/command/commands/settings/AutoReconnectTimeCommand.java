@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class AutoReconnectTimeCommand extends Command {
 
     public AutoReconnectTimeCommand() {
-        super("autoreconnecttime", "Ustaw czas reconnecta (antybot)", ",autoreconnecttime [bots/runnables] [czas w sek]",
+        super("autoreconnecttime", "Установить время переподключения (антибот)", ",autoreconnecttime [bots/runnables] [czas w sek]",
                 Group.PLAYER, "botsautoreconnecttime", "botautoreconnecttime");
     }
 

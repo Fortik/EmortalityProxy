@@ -28,7 +28,7 @@ public class CrashCommand extends Command {
     private ItemStack isBook;
     private ItemStack isByte;
     public CrashCommand() {
-        super("crash", "Zlaguj serwer!", ",crash [ilosc pakietow] [boty/PLAYER-true/false] [infinite-true/false] [odstep w sek] &a[&atype&a (swingarm,windowclick,blockplace,setcreativeslot,helditem) [item: beacon/book/byte] ",
+        super("crash", "Положите сервер топовым крашером!", ",crash [ilosc pakietow] [boty/PLAYER-true/false] [infinite-true/false] [odstep w sek] &a[&atype&a (swingarm,windowclick,blockplace,setcreativeslot,helditem) [item: beacon/book/byte] ",
                 Group.PLAYER, "krasz", "lag");
         instance = this;
         //if (true) {

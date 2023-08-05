@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class TimeOutCommand extends Command {
 
     public TimeOutCommand() {
-        super("timeout", "Ustaw timeout polaczen!", ",timeout [runnables/bots] [ping/connect] [czas w sek]",
+        super("timeout", "Установить таймаут ботам", ",timeout [runnables/bots] [ping/connect] [czas w sek]",
                 Group.PLAYER, "connecttimeout", "settimeout");
     }
 

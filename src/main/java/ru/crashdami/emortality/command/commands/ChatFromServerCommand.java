@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class ChatFromServerCommand extends Command {
 
     public ChatFromServerCommand() {
-        super("chatfromserver", "Wlacz/wylacz otrzymywanie wiadomosci od serwera!", ",chatfromserver",
+        super("chatfromserver", "Включить/выключить получение сообщений с сервера!", ",chatfromserver",
                 Group.PLAYER, "chatfromservers");
     }
 

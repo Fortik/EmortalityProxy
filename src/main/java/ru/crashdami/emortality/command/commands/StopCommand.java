@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class StopCommand extends Command {
 
     public StopCommand() {
-        super("stop", "Zastopuj petle!", ",stop [chatbot, crashbot, crash, macrobot, macro]",
+        super("stop", "Остановить действие!", ",stop [chatbot, crashbot, crash, macrobot, macro]",
                 Group.PLAYER, "stopcrash", "stopbot");
     }
 

@@ -8,7 +8,7 @@ import ru.crashdami.emortality.enums.Group;
 public class HelpCommand extends Command {
 
     public HelpCommand() {
-        super("help", "Wyswietla wszystkie komendy", ",help",
+        super("help", "Отображение всех команд", ",help",
                 Group.PLAYER, "pomoc", "pomocy");
     }
 

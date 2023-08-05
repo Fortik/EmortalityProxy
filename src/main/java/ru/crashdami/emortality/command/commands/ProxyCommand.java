@@ -12,7 +12,7 @@ import java.net.Socket;
 public class ProxyCommand extends Command {
 
     public ProxyCommand() {
-        super("proxy", "Zarzadzaj ip proxies!", ",proxy [add/recheck/list]",
+        super("proxy", "Управляйте своими ip-прокси!", ",proxy [add/recheck/list]",
                 Group.PLAYER, "proksi");
     }
 

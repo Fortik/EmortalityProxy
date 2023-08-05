@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class AutoCaptchaCommand extends Command {
 
     public AutoCaptchaCommand() {
-        super("autocaptcha", "Wlacz/wylacz autocaptche", ",autocaptcha [bots/runnables]",
+        super("autocaptcha", "Включение/выключение автозахвата капчи", ",autocaptcha [bots/runnables]",
                 Group.PLAYER, "botsautocaptcha", "botautocaptcha");
     }
 

@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class AutoReconnectCommand extends Command {
 
     public AutoReconnectCommand() {
-        super("autoreconnect", "Wlacz/wylacz autoreconnect (reconnect antybot)", ",autoreconnect [bots/runnables]",
+        super("autoreconnect", "Включить/выключить автоподключение (переподключение антибота)", ",autoreconnect [bots/runnables]",
                 Group.PLAYER, "botsautoreconnect", "botautoreconnect");
     }
 

@@ -9,7 +9,7 @@ import ru.crashdami.emortality.enums.Group;
 public class DetachCommand extends Command {
 
     public DetachCommand() {
-        super("detach", "Rozlacz sie od bota, serwer pozostaje na serwrze", ",detach",
+        super("detach", "Отключение от бота, сервер остается на сервере", ",detach",
                 Group.PLAYER, "d", "ghost");
     }
 

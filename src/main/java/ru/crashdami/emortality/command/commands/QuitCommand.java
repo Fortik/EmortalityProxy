@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class QuitCommand extends Command {
 
     public QuitCommand() {
-        super("quit", "Wyjdz z serwera (rozlacza calkowicie)", ",quit",
+        super("quit", "Выход из сервера (полное отключение)", ",quit",
                 Group.PLAYER, "wyjdz", "left", "leave", "q");
     }
 

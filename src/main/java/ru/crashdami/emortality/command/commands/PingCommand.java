@@ -16,7 +16,7 @@ import java.net.Proxy;
 public class PingCommand extends Command {
 
     public PingCommand() {
-        super("ping", "Pinguje serwer!", ",ping [serwer:port]",
+        super("ping", "Пинг сервера!", ",ping [serwer:port]",
                 Group.PLAYER, "zrobping");
     }
 
