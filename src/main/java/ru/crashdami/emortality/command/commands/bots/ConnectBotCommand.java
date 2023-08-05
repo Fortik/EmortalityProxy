@@ -32,7 +32,7 @@ import java.util.Random;
 public class ConnectBotCommand extends Command {
 
     public ConnectBotCommand() {
-        super("connectbot", "Zaatakuj serwer botami!", ",connectbot [serwer:port] [ilosc] [ping] [delay w ms] [proxy/none/random/] [macro id/none]",
+        super("connectbot", "Атакуйте сервер ботами!", ",connectbot [serwer:port] [ilosc] [ping] [delay w ms] [proxy/none/random/] [macro id/none]",
                 Group.PLAYER, "joinbot", "connectbots", "joinbots");
     }
 

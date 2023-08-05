@@ -9,7 +9,7 @@ import ru.crashdami.emortality.enums.Group;
 public class BotChatCommand extends Command {
 
     public BotChatCommand() {
-        super("botchat", "Boty pisza na czacie!", ",botchat [nick bota/all] [infinite-true/false] [czas w sek] [wiadomosc]",
+        super("botchat", "Боты пишут в чат!", ",botchat [nick bota/all] [infinite-true/false] [czas w sek] [wiadomosc]",
                 Group.PLAYER, "botczat", "chatbot");
     }
 

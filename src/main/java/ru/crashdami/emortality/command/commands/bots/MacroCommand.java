@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class MacroCommand extends Command {
 
     public MacroCommand() {
-        super("macro", "Nagraj ruchy, a potem je powtarzaj!", ",macro",
+        super("macro", "Запишите движения, а затем повторите их!", ",macro",
                 Group.PLAYER, "makro");
     }
 

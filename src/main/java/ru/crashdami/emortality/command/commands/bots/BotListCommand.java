@@ -8,7 +8,7 @@ import ru.crashdami.emortality.enums.Group;
 public class BotListCommand extends Command {
 
     public BotListCommand() {
-        super("botlist", "Boty pisza na czacie!", ",botlist",
+        super("botlist", "Получить список ботов", ",botlist",
                 Group.PLAYER, "listbot", "listabotow");
     }
 

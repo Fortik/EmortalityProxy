@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class ChatFromBotCommand extends Command {
 
     public ChatFromBotCommand() {
-        super("chatfrombots", "Otrzymuj wiadomosci z chatu botow!", ",chatfrombots",
+        super("chatfrombots", "Получайте сообщения из чата бота!", ",chatfrombots",
                 Group.PLAYER, "chatfrombot");
     }
 

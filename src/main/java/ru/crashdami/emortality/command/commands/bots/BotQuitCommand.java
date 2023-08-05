@@ -8,7 +8,7 @@ import ru.crashdami.emortality.enums.Group;
 public class BotQuitCommand extends Command {
 
     public BotQuitCommand() {
-        super("botquit", "Boty wychodza z serwerow!", ",botquit [all/nick bota]",
+        super("botquit", "Боты покидают сервер!", ",botquit [all/nick bota]",
                 Group.PLAYER, "botsquit", "bquit", "quitbot", "quitbots");
     }
 

@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class MessagesBotCommand extends Command {
 
     public MessagesBotCommand() {
-        super("messagesbot", "Wlacz/wylacz wiadomosci o polaczeniu botow", ",messagesbot [quit/join]",
+        super("messagesbot", "Включение/выключение сообщений о подключении бота", ",messagesbot [quit/join]",
                 Group.PLAYER, "botmessages");
     }
 

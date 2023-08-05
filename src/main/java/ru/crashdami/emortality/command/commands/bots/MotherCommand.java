@@ -7,7 +7,7 @@ import ru.crashdami.emortality.enums.Group;
 public class MotherCommand extends Command {
 
     public MotherCommand() {
-        super("mother", "Boty nasladuja twoje ruchy!", ",mother",
+        super("mother", "Боты имитируют ваши движения!", ",mother",
                 Group.PLAYER, "follow", "botmother");
     }
 
