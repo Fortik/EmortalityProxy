@@ -1,94 +1,48 @@
 package ru.crashdami.emortality.command.commands;
 
-import ru.crashdami.emortality.objects.Player;
-import ru.crashdami.emortality.objects.Proxy;
-import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.Group;
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.managers.ProxyManager;
-
-import java.net.InetSocketAddress;
-import java.net.Socket;
+import ru.crashdami.emortality.objects.Player;
+import ru.crashdami.emortality.command.Command;
 
 public class ProxyCommand extends Command {
 
     public ProxyCommand() {
-        super("proxy", "Управляйте своими ip-прокси!", ",proxy [add/recheck/list]",
-                Group.PLAYER, "proksi");
+        super("proxy", "Управление ip-прокси!", ",proxy [recheck/list]",
+                Group.USER, "proksi");
     }
 
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (args.length < 2) {
-            p.sendMessage("$p &a,proxy [add/recheck/list] &7- pokazuje poprawne uzycie");
+            p.sendMessage("$p &a,proxy [recheck/list] &7- правильное использование");
             return;
         }
-        if (args[1].equalsIgnoreCase("list") && args.length < 3) {
-            if (ProxyManager.proxies.size() <= 0) {
-                p.sendMessage("$p &cBrak aktywnych socks proxy! Mozesz dodac wlasne &csocks proxy przy uzyciu &6,proxy add");
-                return;
-            }
-            p.sendMessage("$p &cLista proxy: &a( " + ProxyManager.proxies.size() + " )");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (final Proxy proxy : ProxyManager.proxies) {
-                        proxy.getInfo(p);
-                    }
-                }
-            }).start();
-        } else {
-            if (args[1].equalsIgnoreCase("add") && args.length < 3) {
-                p.sendMessage("$p &7Poprawne uzycie: &a,proxy add <ip:port> [checker ms, host:ip (np: whois.internic.net:43)]");
-                return;
-            }
-            if (args.length > 3) {
-                final String ip1 = args[2];
-                if (!ip1.contains(":")) {
-                    p.sendMessage("$p &cNie podales portu proxy!");
+        /*if (!p.can(Group.ADMIN)) {
+            if (args[1].equalsIgnoreCase("list") && args.length < 3) {
+                if (ProxyManager.proxies.size() <= 0) {
                     return;
                 }
-                final String host1 = args[2].split(":")[0];
-                final int port1 = Integer.valueOf(args[2].split(":")[1]);
-                final String ip2 = args[3];
-                if (!ip2.contains(":")) {
-                    p.sendMessage("$p &cNie podales portu checkera!");
-                    return;
-                }
-                final String host2 = args[3].split(":")[0];
-                final int port2 = Integer.valueOf(args[3].split(":")[1]);
-                p.sendMessage("$p &aSprawdzam proxy..");
+                p.sendMessage("$p &cЛист прокси: &a( " + ProxyManager.proxies.size() + " )");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        final java.net.Proxy proxy = new java.net.Proxy(java.net.Proxy.Type.SOCKS, new InetSocketAddress(host1, port1));
-                        final InetSocketAddress socketAddress = new InetSocketAddress(host2, port2);
-                        long connectTime = System.currentTimeMillis();
-                        final Socket socket = new Socket(proxy);
-                        try {
-                            socket.connect(socketAddress);
-                            connectTime = System.currentTimeMillis() - connectTime;
-                            final Proxy proxyObj =
-                                    new Proxy(proxy, true, connectTime);
-                            ProxyManager.proxies.add(proxyObj);
-                            System.out.println("[ProxyChecker] Proxy " + proxy.address() + " jest online." +
-                                    " [" + connectTime + " ms, " + ProxyManager.proxies.size() + "]");
-                            p.sendMessage("$p &aZaladowano i sprawdzono proxy! &7(ip: &a" +
-                                    proxy.address().toString().split(":")[0] + "&7, port:" +
-                                    " &a" + proxy.address().toString().split(":")[1] + "&7, ms: &a" + connectTime + "&7)");
-                        } catch (Throwable e) {
-                            p.sendMessage("$p &cBlad podczas sprawdzania proxy! &6" + e.getMessage());
+                        for (final objects.ru.crashdami.emortality.Proxy proxy : ProxyManager.proxies) {
+                            proxy.getInfo(p);
                         }
                     }
                 }).start();
             }
+        }*/
+        else {
             if (args[1].equalsIgnoreCase("recheck")) {
                 if (!p.can(Group.ADMIN)) {
-                    p.sendMessage("$p &cNie masz dostepu do tej komendy!");
+                    p.sendMessage("$p &cУ вас нет доступа к этой команде!");
                     return;
                 }
-                p.sendMessage("$p &aLaduje od nowa proxy.. Broadcast: true");
+                p.sendMessage("$p &aПерезагрузка прокси...");
                 ProxyManager.proxies.clear();
-                ProxyManager.loadProxies(true);
+                ProxyManager.loadProxies(true, 400);
             }
         }
     }

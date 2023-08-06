@@ -5,10 +5,12 @@ import org.apache.commons.configuration.XMLConfiguration;
 import ru.crashdami.emortality.command.commands.*;
 import ru.crashdami.emortality.command.commands.bots.*;
 import ru.crashdami.emortality.command.commands.settings.*;
-import ru.crashdami.emortality.enums.Group;
+import ru.crashdami.emortality.command.commands.*;
+import ru.crashdami.emortality.command.commands.bots.*;
+import ru.crashdami.emortality.command.commands.settings.*;
+import ru.crashdami.emortality.managers.PlayerManager;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.utils.DateUtilities;
-import ru.crashdami.emortality.managers.PlayerManager;
 
 import java.io.File;
 import java.util.Arrays;
@@ -16,7 +18,7 @@ import java.util.logging.Logger;
 
 public abstract class ProxyHelper {
 
-    private static Logger logger = Logger.getLogger("EmortalityProxy");
+    private static Logger logger = Logger.getLogger("CasualProxy");
     private char[] chars;
     private XMLConfiguration config;
 
@@ -40,7 +42,7 @@ public abstract class ProxyHelper {
             final XMLConfiguration configCreate = new XMLConfiguration();
             configCreate.setBasePath("EmortalityProxy");
             configCreate.setFileName("settings.xml");
-            configCreate.addProperty("users", Arrays.asList("Crashdami;ADMIN;haslodoproxy;10-02-2019:14:00:00"));
+            configCreate.addProperty("users", Arrays.asList("HTTP;ADMIN;123123;00-00-9999:00:00:00"));
             this.config = configCreate;
         } else {
             final XMLConfiguration configCreate = new XMLConfiguration();
@@ -67,7 +69,7 @@ public abstract class ProxyHelper {
                 p.setGroup(Group.valueOf(split[1]));
                 p.setPassword(split[2]);
                 p.setExpirationDate(DateUtilities.getDateFromString(split[3]));
-                EmortalityMain.addAccess(p.getNick());
+                EmortalityProxy.addAccess(p.getNick());
             }
             this.config = config2;
         } catch (Throwable e) {
@@ -98,6 +100,8 @@ public abstract class ProxyHelper {
         new AutoLoginCommand();
         new MessagesBotCommand();
         new ProxyCommand();
+        new RespawnCommand();
+        new ChatCommand();
         //new TestObejscieCommand();
     }
 

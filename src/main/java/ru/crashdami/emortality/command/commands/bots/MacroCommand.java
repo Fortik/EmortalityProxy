@@ -1,11 +1,11 @@
 package ru.crashdami.emortality.command.commands.bots;
 
+import ru.crashdami.emortality.Group;
+import ru.crashdami.emortality.managers.MacroManager;
 import ru.crashdami.emortality.objects.Macro;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.Group;
-import ru.crashdami.emortality.enums.MacroType;
-import ru.crashdami.emortality.managers.MacroManager;
+import ru.crashdami.emortality.types.MacroType;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -13,27 +13,27 @@ import java.util.concurrent.TimeUnit;
 public class MacroCommand extends Command {
 
     public MacroCommand() {
-        super("macro", "Запишите движения, а затем повторите их!", ",macro",
-                Group.PLAYER, "makro");
+        super("macro", "Запишите свои движения, а затем повторите их!", ",macro",
+                Group.USER, "makro");
     }
 
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (args.length < 2) {
-            p.sendMessage("$p &7Poprawne uzycie: &a,macro start [bot/runnables]");
-            p.sendMessage("&a,macro play [id macra] [typ macra (bot/human)] [infinite, true/false]");
-            p.sendMessage("&a,macro stop&7 - konczy nagrywanie macra");
-            p.sendMessage("&a,stop &7- komendy do stopowania wykonywania macra");
+            p.sendMessage("$p &7Правильное использование: &b,macro start [bots/runnables]");
+            p.sendMessage("&b,macro play [айди макро] [тип макро bot/human] [будет ли макрос проигроваться бесконечно?, true/false]");
+            p.sendMessage("&b,macro stop&7 - остановить все макро");
+            p.sendMessage("&b,stop &7- команды для остановки выполнения макро");
             return;
         }
         if (args[1].equalsIgnoreCase("start")) {
             if (args.length == 3) {
                 if (p.macroRecording) {
-                    p.sendMessage("$p &cNagrywasz juz macro! Mozesz wylaczyc nagrywanie macra uzywajac: &6,macro stop");
+                    p.sendMessage("$p &cВы уже записываете макрос! Вы можете отключить запись макроса, используя: &6,macro stop");
                     return;
                 }
                 if (p.getSessionConnect() == null) {
-                    p.sendMessage("$p &cNie jestes polaczony z zadnym serwerem!");
+                    p.sendMessage("$p &cВы не подключены ни к одному серверу!");
                     return;
                 }
                 if (args[2].equalsIgnoreCase("bot")) {
@@ -45,7 +45,7 @@ public class MacroCommand extends Command {
                         }
                     }
                     final Macro macro = new Macro(id, MacroType.BOT, p.getNick());
-                    p.sendMessage("$p &aZaczynam nagrywac macro.. ID macra: &7" + macro.getId() + "&a, typ macra: &7BOT");
+                    p.sendMessage("$p &bНачинаю запись макроса.. Айди макро: &7" + macro.getId() + "&b, Тип макро: &7BOT");
                     p.macro = macro;
                     macro.startRecording(p);
                 } else if (args[2].equalsIgnoreCase("runnables")) {
@@ -57,15 +57,15 @@ public class MacroCommand extends Command {
                         }
                     }
                     final Macro macro = new Macro(id, MacroType.PLAYER, p.getNick());
-                    p.sendMessage("$p &aZaczynam nagrywac macro.. ID macra: &7" + macro.getId() + "&a, typ macra: &7PLAYER");
+                    p.sendMessage("$p &bНачинаю запись макроса.. Айди макро: &7" + macro.getId() + "&b, Тип макро: &7PLAYER");
                     p.macro = macro;
                     macro.startRecording(p);
                 }
             } else {
-                p.sendMessage("$p &7Poprawne uzycie: &a,macro start [bot/runnables]");
-                p.sendMessage("&a,macro play [id macra] [typ macra (bot/human)] [infinite, true/false]");
-                p.sendMessage("&a,macro stop&7 - konczy nagrywanie macra");
-                p.sendMessage("&a,stop &7- komendy do stopowania wykonywania macra");
+                p.sendMessage("$p &7Правильное использование: &b,macro start [bots/runnables]");
+                p.sendMessage("&b,macro play [айди макро] [тип макро bot/human] [будет ли макрос проигроваться бесконечно?, true/false]");
+                p.sendMessage("&b,macro stop&7 - остановить все макро");
+                p.sendMessage("&b,stop &7- команды для остановки выполнения макро");
             }
         } else if (args[1].equalsIgnoreCase("play")) {
             if (args.length > 4) {
@@ -76,38 +76,38 @@ public class MacroCommand extends Command {
                     }
                 }
                 if (macro2 == null) {
-                    p.sendMessage("$p &cMacro z ID &6" + args[2] + " &cnie istnieje!");
+                    p.sendMessage("$p &cМакро с айди &6" + args[2] + " &cне найден!");
                     return;
                 }
                 final boolean infinite = Boolean.valueOf(args[4]);
                 final String type = args[3];
                 if (type.equalsIgnoreCase("runnables") || type.equalsIgnoreCase("human")) {
                     if (p.getSessionConnect() == null) {
-                        p.sendMessage("$p &cNie jestes polaczony z zadnym serwerem!");
+                        p.sendMessage("$p &cВы не подключены ни к одному серверу!");
                         return;
                     }
-                    p.sendMessage("$p &aOdtwarzam macro, ID: &7" + macro2.getId() + "&a, typ macra: " +
-                            "&7PLAYER&a, infinite: &7" + infinite + "&a, zastopuj uzywajac: &7,stop macro");
+                    p.sendMessage("$p &bМакрос запущен!, ID: &7" + macro2.getId() + "&b, Тип макро: " +
+                            "&7PLAYER&b, Бесконечно: &7" + infinite + "&b, остановить макро: &7,stop macro");
                     macro2.macroStartDoing(p, infinite);
                 } else if (type.equalsIgnoreCase("bot") || type.equalsIgnoreCase("bots")) {
                     if (p.getBots().size() < 1) {
-                        p.sendMessage("$p &cNie masz zadnych botow!");
+                        p.sendMessage("$p &cВы еще не запустили не одного бота!");
                         return;
                     }
-                    p.sendMessage("$p &aOdtwarzam macro, ID: &7" + macro2.getId() + "&a, typ macra: " +
-                            "&7BOT&a, infinite: &7" + infinite + "&a, zastopuj uzywajac: &7,stop macrobot");
+                    p.sendMessage("$p &bМакрос запущен!, ID: &7" + macro2.getId() + "&b, Тип макро: " +
+                            "&7BOT&b, Бесконечно: &7" + infinite + "&b, остановить макро: &7,stop macrobot");
                     macro2.macroStartDoing(p, infinite);
                 }
             }
         } else if (args[1].equalsIgnoreCase("stop")) {
             if (!p.macroRecording) {
-                p.sendMessage("$p &cNie nagrywasz zadnego macra! Mozesz zaczac nagrywac macro uzywajac: &6,macro start");
+                p.sendMessage("$p &cВы не записываете макро! Вы можете начать запись макро, используя: &6,macro start");
                 return;
             }
             if (p.macro != null) {
-                p.sendMessage("$p &aMacro nagrane i gotowe do uzytku. &a("
-                        + p.macro.getPackets().size() + "&a pakietow, &aczas: "
-                        + p.macro.getTime() + "ms (" + TimeUnit.MILLISECONDS.toSeconds(p.macro.getTime()) + "sek)&a, id: &7" + p.macro.getId() + "&a)");
+                p.sendMessage("$p &bМакрос записан и готов к использованию. &b("
+                        + p.macro.getPackets().size() + "&b пакетов, &bдлительность: "
+                        + p.macro.getTime() + "ms (" + TimeUnit.MILLISECONDS.toSeconds(p.macro.getTime()) + "сек)&b, айди: &7" + p.macro.getId() + "&b)");
                 p.macro.stopRecording(p);
                 //p.macroRecording=false;
                 //MacroManager.macros.add(p.macro);
@@ -115,14 +115,14 @@ public class MacroCommand extends Command {
             }
         } else if (args[1].equalsIgnoreCase("list")) {
             if (MacroManager.macros.size() == 0) {
-                p.sendMessage("$p &cBrak stworzonych makier!");
+                p.sendMessage("$p &cУ вас нету записаных макро!");
                 return;
             }
-            p.sendMessage("$p &cLista makier:");
+            p.sendMessage("$p &cСписок макро:");
             for (Macro macro : MacroManager.macros)
-                p.sendMessage("&6" + macro.getId() + "&7, typ: &6" + macro.getMacroType()
-                        + "&7, ilosc pakietow: &6" + macro.getPackets().size() + "&7, czas: &6"
-                        + macro.getTime() + "ms (" + TimeUnit.MILLISECONDS.toSeconds(p.macro.getTime()) + "sek)&7, autor: &6" + macro.getOwner());
+                p.sendMessage("&6" + macro.getId() + "&7, Тип: &6" + macro.getMacroType()
+                        + "&7, Количество пакетов: &6" + macro.getPackets().size() + "&7, длительность: &6"
+                        + macro.getTime() + "ms (" + TimeUnit.MILLISECONDS.toSeconds(p.macro.getTime()) + "сек)&7, автор: &6" + macro.getOwner());
 
         }
     }

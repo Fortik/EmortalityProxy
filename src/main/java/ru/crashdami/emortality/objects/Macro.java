@@ -11,8 +11,8 @@ import org.spacehq.mc.protocol.packet.ingame.client.window.ClientWindowActionPac
 import org.spacehq.packetlib.Session;
 import org.spacehq.packetlib.event.session.*;
 import org.spacehq.packetlib.packet.Packet;
-import ru.crashdami.emortality.enums.MacroType;
 import ru.crashdami.emortality.managers.MacroManager;
+import ru.crashdami.emortality.types.MacroType;
 
 import java.util.Arrays;
 import java.util.List;

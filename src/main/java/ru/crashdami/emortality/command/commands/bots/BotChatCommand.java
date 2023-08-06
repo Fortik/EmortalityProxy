@@ -1,26 +1,26 @@
 package ru.crashdami.emortality.command.commands.bots;
 
 import org.spacehq.mc.protocol.packet.ingame.client.ClientChatPacket;
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Bot;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.Group;
 
 public class BotChatCommand extends Command {
 
     public BotChatCommand() {
-        super("botchat", "Боты пишут в чат!", ",botchat [nick bota/all] [infinite-true/false] [czas w sek] [wiadomosc]",
-                Group.PLAYER, "botczat", "chatbot");
+        super("botchat", "Боты пишут в чат!", ",botchat [ник бота/all] [будут ли боты бесконечно спамить? true/false] [задержка в сек.] [сообщение]",
+                Group.USER, "botczat", "chatbot");
     }
 
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (args.length < 5) {
-            p.sendMessage("$p &7Poprawne uzycie: &a" + getUsage());
+            p.sendMessage("$p &7Правильное использование: &b" + getUsage());
             return;
         }
         if (p.getBots().size() < 1) {
-            p.sendMessage("$p &cNie masz zadnych botow!");
+            p.sendMessage("$p &cВы еще не запустили не одного бота!");
             return;
         }
         final Boolean infinite = Boolean.parseBoolean(args[2]);
@@ -75,7 +75,7 @@ public class BotChatCommand extends Command {
                 }
             }
             if (!exists)
-                p.sendMessage("$p &cBot o nazwie: &7" + nickBot + "&c nie istnieje!");
+                p.sendMessage("$p &cБот с ником: &7" + nickBot + "&c не найден!");
         }
     }
 }

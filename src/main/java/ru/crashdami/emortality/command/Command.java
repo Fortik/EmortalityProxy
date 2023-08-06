@@ -1,7 +1,7 @@
 package ru.crashdami.emortality.command;
 
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Player;
-import ru.crashdami.emortality.enums.Group;
 
 public abstract class Command implements CommandExecutor {
 
@@ -23,7 +23,7 @@ public abstract class Command implements CommandExecutor {
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (!p.can(group)) {
-            p.sendMessage("Nie masz uprawnien do tej komendy!");
+            p.sendMessage("Вы не авторизованы для этой команды!");
             return;
         }
     }

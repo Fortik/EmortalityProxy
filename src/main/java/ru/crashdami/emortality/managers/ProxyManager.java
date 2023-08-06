@@ -19,19 +19,19 @@ public class ProxyManager {
 
     private static int proxyIterator;
 
-    public static void loadProxies(final boolean broadcast) {
+    public static void loadProxies(final boolean broadcast, int maxConnectTime) {
         new Thread() {
             @Override
             public void run() {
                 Scanner sc = null;
                 try {
                     sc = new Scanner(new File("EmortalityProxy", "socks.txt"));
-                } catch (FileNotFoundException e3) {
+                } catch (FileNotFoundException ex1) {
                     System.out.println("Could not find proxy file, creating..");
                     try {
                         new File("EmortalityProxy", "socks.txt").createNewFile();
-                    } catch (IOException e2) {
-                        e2.printStackTrace();
+                    } catch (IOException ex2) {
+                        ex2.printStackTrace();
                     }
                 }
                 if (sc == null) {
@@ -48,19 +48,20 @@ public class ProxyManager {
                                 final String host = parts[0];
                                 final String port = parts[1];
                                 final java.net.Proxy proxy = new java.net.Proxy(java.net.Proxy.Type.SOCKS, new InetSocketAddress(host, Integer.valueOf(port)));
-                                final InetSocketAddress socketAddress = new InetSocketAddress("whois.internic.net", 43);
+                                //final InetSocketAddress socketAddress = new InetSocketAddress("whois.internic.net", 43);
                                 long connectTime = System.currentTimeMillis();
                                 final Socket socket = new Socket(proxy);
                                 try {
-                                    socket.connect(socketAddress);
+                                    //socket.connect(socketAddress);
                                     connectTime = System.currentTimeMillis() - connectTime;
                                     final ru.crashdami.emortality.objects.Proxy proxyObj =
                                             new ru.crashdami.emortality.objects.Proxy(proxy, true, connectTime);
-                                    ProxyManager.proxies.add(proxyObj);
+                                    if (connectTime <= maxConnectTime)
+                                        ProxyManager.proxies.add(proxyObj);
                                     if (broadcast)
                                         ChatUtilities.broadcast(
-                                                "&8[&2Proxy&aManager&8] &aЕще один прокси-сервер Socks загружен и готов к использованию," +
-                                                        " пункт в списке: " + ProxyManager.proxies.size() + ", больше под &7, прокси-список");
+                                                "§bEmortality§fProxy §7»§r &aKolejne proxy socks zaladowane i gotowe do uzywania," +
+                                                        " pozycja w liscie: " + ProxyManager.proxies.size() + ", wiecej pod &7,proxy list");
                                 } catch (Throwable t) {
                                 }
                             }

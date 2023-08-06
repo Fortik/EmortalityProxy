@@ -1,30 +1,42 @@
 package ru.crashdami.emortality;
 
-import ru.crashdami.emortality.exceptions.InvalidLicenseReturnException;
 import ru.crashdami.emortality.managers.ProxyManager;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-
-public class Proxy extends JFrame {
-
-    private JPanel panel;
+public class Proxy {
 
     public Proxy() {
-        ProxyManager.loadProxies(false);
+        ProxyManager.loadProxies(false, 20000);
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            new Proxy().setVisible(true);
-        });
-        final EmortalityMain proxy = new EmortalityMain();
+        new Proxy();
+        final EmortalityProxy proxy = new EmortalityProxy();
         proxy.onLoad();
     }
+
+    /*private void checkWWW() throws RuntimeException {
+        try {
+            URL oracle = new URL("https://raw.githubusercontent.com/yooniks/proxy_license/master/license.txt");
+            URLConnection yc = oracle.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    yc.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                if (inputLine.equalsIgnoreCase("true")) {
+                    System.out.println(
+                            "\n\n\n\n\n\n\n\n\n\n\n\n" +
+                                    "##################################" +
+                                    "\n\n" +
+                                    "Licencja poprawna!" +
+                                    "\n\n" +
+                                    "#########################");
+                } else {
+                    throw new RuntimeException("вырежу это нахуй");
+                }
+            }
+            in.close();
+        } catch (Throwable ex) {
+            throw new RuntimeException("вырежу это нахуй");
+        }
+    }*/
 }

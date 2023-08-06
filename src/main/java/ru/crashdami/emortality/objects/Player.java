@@ -6,24 +6,21 @@ import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerPlayerListDataPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerTitlePacket;
 import org.spacehq.packetlib.Session;
-import org.spacehq.packetlib.packet.Packet;
+import ru.crashdami.emortality.Group;
+import ru.crashdami.emortality.managers.ProxyManager;
 import ru.crashdami.emortality.objects.player.BotOptions;
 import ru.crashdami.emortality.objects.player.Connector;
 import ru.crashdami.emortality.objects.player.PlayerOptions;
-import ru.crashdami.emortality.enums.Group;
-import ru.crashdami.emortality.managers.ProxyManager;
 import ru.crashdami.emortality.utils.ChatUtilities;
+import ru.crashdami.emortality.utils.DateUtilities;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class Player extends Connector {
 
-    /*private boolean stopCrash;
-    private boolean stopChatBot;
-    private boolean stopCrashBot;*/
-    public boolean stopMacroBot; //to tez kiedys poprawie, jak bedzie mi sie chcialo xd
-    public boolean stopMacroPlayer; //to tez kiedys poprawie, jak bedzie mi sie chcialo xd
+    public boolean stopMacroBot;
+    public boolean stopMacroPlayer;
     public boolean macroRecording;
     public Macro macro;
     public PlayerOptions playerOptions;
@@ -50,45 +47,46 @@ public class Player extends Connector {
     }
 
     public void sendMessage(String message) {
-        this.session.send((Packet) new ServerChatPacket(ChatUtilities.fixColor(message)));
+        this.session.send(new ServerChatPacket(ChatUtilities.fixColor(message)));
     }
 
     public void updateTab() {
-        if (sessionConnect != null && !getLastPacket().toLowerCase().contains("rozlaczono")) {
+        if (sessionConnect != null && !getLastPacket().toLowerCase().contains("...")) {
             final Long ms = (System.currentTimeMillis() - getLastPacketMs() == 0L) ? 1L :
                     (System.currentTimeMillis() - getLastPacketMs());
-            session.send((Packet) new ServerChatPacket(
-                    ChatUtilities.fixColor("&8>> &7Последний пакет с сервера был получен: &a" + ms + "ms назад"),
+            session.send(new ServerChatPacket(
+                    ChatUtilities.fixColor("&8>> &7Последний пакет: &a" + ms + "ms"),
                     MessageType.NOTIFICATION));
-            session.send((Packet) new ServerPlayerListDataPacket(
-                    new TextMessage(ChatUtilities.fixColor("&c⦓&m-----&r &bEmortality&fProxy &7created by &aCrashdami&7, &avelocitylove&c&m----⦔&r\n")),
-                    new TextMessage(ChatUtilities.fixColor("\n&7Последний пакет с сервера &8(&7" + (System.currentTimeMillis() - getLastPacketMs()
-                    ) + "ms назад&8):\n&8( &a" + getLastPacket() + "&8 )\n&7Никнейм: &a" + nick + "\n&7Айпи сервера: &a" +
+            session.send(new ServerPlayerListDataPacket(
+                    new TextMessage(ChatUtilities.fixColor("&b&lEmortality&f&lProxy &7by &bCrashdami\n")),
+                    new TextMessage(ChatUtilities.fixColor("\n&7Последний полученый пакет &8(&7" + (System.currentTimeMillis() - getLastPacketMs()
+                    ) + "ms&8):\n&8( &b" + getLastPacket() + "&8 )\n&7Сессия: &b" + nick + " / " + sessionConnect.getHost() + "" +
+                            "\n&7Подписка активна до: &b" + DateUtilities.getDate(getExpirationDate()) + "" +
+                            "\n&7Сервер: &b" +
                             sessionConnect.getHost() + ":" + sessionConnect.getPort() + "\n " +
-                            "&7Количество ботов: &a" + bots.size() + "\n&7Список активных прокси: &a" +
+                            "&7Количество ботов: &b" + bots.size() + "\n&7Количество активных прокси: &b" +
                             ProxyManager.proxies.size() + "&8/&c" + ProxyManager.allproxies +
-                            "\n\n&c⦓&m-----&r &7Покупка доступа:" +
-                            " &bhttps://vk.com/emortality &c&m----⦔&r"))));
+                            "\n\n&b$vk &8| &b$ds"))));
         } else if (sessionConnect == null || getLastPacket().toLowerCase().contains("rozlaczono")) {
-            session.send((Packet) new ServerPlayerListDataPacket(
-                    new TextMessage(ChatUtilities.fixColor("&c⦓&m-----&r &bEmortality&fProxy &7created by &aCrashdami&7, &avelocitylove &c&m----⦔&r\n")),
-                    new TextMessage(ChatUtilities.fixColor("\n&7Последний пакет с сервера &8(&70ms назад&8):\n&8( &cОтключено &8)\n&7Никнейм: &a" + nick + "\n&7Айпи сервера &a" +
-                            "отсутсвует" + "\n " +
-                            "&7Количество ботов: &a" + bots.size() + "\n&7Список активных прокси: &a" +
+            session.send(new ServerPlayerListDataPacket(
+                    new TextMessage(ChatUtilities.fixColor("&b&lEmortality&f&lProxy &7by &bCrashdami\n")),
+                    new TextMessage(ChatUtilities.fixColor("\n&7Последний полученый пакет &8(&70ms&8):\n&8( &c... &8)" +
+                            "\n&7Сессия: &b" + nick + " / $ip" + "" +
+                            "\n&7Подписка активна до: &b" + DateUtilities.getDate(getExpirationDate()) + "\n&7Сервер: $ip" + "\n " +
+                            "&7Количество ботов: &a" + bots.size() + "\n&7Количество активных прокси: &a" +
                             ProxyManager.proxies.size() + "&8/&c" + ProxyManager.allproxies +
-                            "\n\n&c⦓&m-----&r &7Покупка доступа:" +
-                            " &bhttps://vk.com/emortality &c&m----⦔&r"))));
+                            "\n\n&b$vk &8| &b$ds"))));
         }
     }
 
-    public void updateLag() {
+    public void updateServerMS() {
         if (sessionConnect != null && System.currentTimeMillis() - getLastPacketMs() > 1050L
                 && System.currentTimeMillis() - getLastPacketMs() < 1000000L) {
-            session.send((Packet) new ServerTitlePacket("", false));
-            session.send((Packet) new ServerTitlePacket(ChatUtilities.fixColor("&8>> &cСервер не отвечает (LAG?)"), false));
-            session.send((Packet) new ServerTitlePacket(ChatUtilities.fixColor("&8>> &fОт: &7" + (System.currentTimeMillis()
+            session.send(new ServerTitlePacket("", false));
+            session.send(new ServerTitlePacket(ChatUtilities.fixColor("&8>> &cСервер не отвечает! (LAG?)"), false));
+            session.send(new ServerTitlePacket(ChatUtilities.fixColor("&8>> &c" + (System.currentTimeMillis()
                     - getLastPacketMs()) + "ms"), true));
-            session.send((Packet) new ServerTitlePacket(10, 17, 10));
+            session.send(new ServerTitlePacket(10, 17, 10));
         }
     }
 
@@ -159,28 +157,4 @@ public class Player extends Connector {
     public void setMother(boolean mother) {
         this.mother = mother;
     }
-
-    /*public boolean isStopCrash() {
-        return stopCrash;
-    }
-
-    public boolean isStopChatBot() {
-        return stopChatBot;
-    }
-
-    public boolean isStopCrashBot() {
-        return stopCrashBot;
-    }
-
-    public void setStopChatBot(boolean stopChatBot) {
-        this.stopChatBot = stopChatBot;
-    }
-
-    public void setStopCrash(boolean stopCrash) {
-        this.stopCrash = stopCrash;
-    }
-
-    public void setStopCrashBot(boolean stopCrashBot) {
-        this.stopCrashBot = stopCrashBot;
-    }*/
 }

@@ -1,21 +1,21 @@
 package ru.crashdami.emortality.command.commands;
 
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
 import ru.crashdami.emortality.command.CommandManager;
-import ru.crashdami.emortality.enums.Group;
 
 public class HelpCommand extends Command {
 
     public HelpCommand() {
-        super("help", "Отображение всех команд", ",help",
-                Group.PLAYER, "pomoc", "pomocy");
+        super("help", "Отображает все команды", ",help",
+                Group.USER, "pomoc", "pomocy");
     }
 
     @Override
     public void onCommand(Player p, Command command, String[] args) {
-        p.sendMessage("&7Lista komend: &8(&a" + CommandManager.getCommands().size() + "&8)");
+        p.sendMessage("&7Список команд: &8(&b" + CommandManager.getCommands().size() + "&8)");
         for (Command cmd : CommandManager.getCommands())
-            p.sendMessage("&a," + cmd.getCommand() + "&7 - " + cmd.getDescription());
+            p.sendMessage("&b» ," + cmd.getCommand() + "&7 - " + cmd.getDescription());
     }
 }

@@ -1,38 +1,38 @@
 package ru.crashdami.emortality.command.commands.settings;
 
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.Group;
 
 public class AutoReconnectCommand extends Command {
 
     public AutoReconnectCommand() {
-        super("autoreconnect", "Включить/выключить автоподключение (переподключение антибота)", ",autoreconnect [bots/runnables]",
-                Group.PLAYER, "botsautoreconnect", "botautoreconnect");
+        super("autoreconnect", "Авто переподключение на сервер!", ",autoreconnect [bots/runnables]",
+                Group.USER, "botsautoreconnect", "botautoreconnect");
     }
 
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (args.length < 2) {
-            p.sendMessage("$p &7Poprawne uzycie: &a" + getUsage());
+            p.sendMessage("$p &7Правильное использование: &b" + getUsage());
             return;
         }
         final String type = args[1];
         if (type.equalsIgnoreCase("bots") || type.equalsIgnoreCase("bot")) {
             if (p.botOptions.autoReconnect) {
-                p.sendMessage("$p &7AutoReconnect botow &cwylaczony&7!");
+                p.sendMessage("$p &7Авто-перезаход для ботов &cвыключен&7!");
                 p.botOptions.autoReconnect = false;
                 return;
             }
-            p.sendMessage("$p &7AutoReconnect botow &awlaczony&7!");
+            p.sendMessage("$p &7Авто-перезаход для ботов &aвыключен&7!");
             p.botOptions.autoReconnect = true;
         } else {
             if (p.playerOptions.autoReconnect) {
-                p.sendMessage("$p &7AutoReconnect playera&c wylaczony&7!");
+                p.sendMessage("$p &7Авто-перезаход для игрока&c выключен&7!");
                 p.playerOptions.autoReconnect = false;
                 return;
             }
-            p.sendMessage("$p &7AutoReconnect playera &awlaczony&7!");
+            p.sendMessage("$p &7Авто-перезаход для ботов &aвключен&7!");
             p.playerOptions.autoReconnect = true;
         }
     }

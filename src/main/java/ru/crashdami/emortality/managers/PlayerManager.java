@@ -2,7 +2,7 @@ package ru.crashdami.emortality.managers;
 
 import org.spacehq.mc.auth.data.GameProfile;
 import org.spacehq.packetlib.Session;
-import ru.crashdami.emortality.enums.Group;
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Player;
 
 import java.util.HashMap;
@@ -20,13 +20,13 @@ public class PlayerManager {
         final GameProfile profile = session.getFlag("profile");
         final String nick = profile.getName();
         if (players.get(nick.toLowerCase()) == null)
-            players.put(nick.toLowerCase(), new Player(profile.getName(), Group.PLAYER));
+            players.put(nick.toLowerCase(), new Player(profile.getName(), Group.USER));
         return players.get(nick.toLowerCase());
     }
 
     public static Player getPlayer(String nick) {
         if (players.get(nick.toLowerCase()) == null)
-            players.put(nick.toLowerCase(), new Player(nick, Group.PLAYER));
+            players.put(nick.toLowerCase(), new Player(nick, Group.USER));
         return players.get(nick.toLowerCase());
     }
 }

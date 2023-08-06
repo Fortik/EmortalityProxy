@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="cproxy" />
+        <module name="CasualProxy" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
-      <module name="CasualProxy" target="1.8" />
+      <module name="cproxy" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

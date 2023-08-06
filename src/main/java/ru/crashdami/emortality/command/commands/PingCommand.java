@@ -7,23 +7,23 @@ import org.spacehq.mc.protocol.data.status.handler.ServerInfoHandler;
 import org.spacehq.packetlib.Client;
 import org.spacehq.packetlib.Session;
 import org.spacehq.packetlib.tcp.TcpSessionFactory;
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.Group;
 
 import java.net.Proxy;
 
 public class PingCommand extends Command {
 
     public PingCommand() {
-        super("ping", "Пинг сервера!", ",ping [serwer:port]",
-                Group.PLAYER, "zrobping");
+        super("ping", "Пропинговать сервер!", ",ping [сервер:порт]",
+                Group.USER, "zrobping");
     }
 
     @Override
     public void onCommand(Player p, Command command, String[] args) {
         if (args.length < 2 || !args[1].contains(":")) {
-            p.sendMessage("$p &7Poprawne uzycie: &a" + getUsage());
+            p.sendMessage("$p &7Правильное использование: &b" + getUsage());
             return;
         }
         //final String host = args[1].split(":")[0];
@@ -38,7 +38,7 @@ public class PingCommand extends Command {
             host = argIp.split(":")[0];
             port = Integer.parseInt(argIp.split(":")[1]);
         }*/
-        p.sendMessage("$p &aPingowanie...");
+        p.sendMessage("$p &bПингование...");
         final long ms = System.currentTimeMillis();
         new Thread(new Runnable() {
             @Override
@@ -49,11 +49,11 @@ public class PingCommand extends Command {
                 client.getSession().setFlag("server-info-handler", new ServerInfoHandler() {
                     @Override
                     public void handle(final Session session, final ServerStatusInfo info) {
-                        p.sendMessage("$p &7Zpingowano. &a[ Silnik serwera: &7" + info.getVersionInfo().getVersionName() + "&a, PLAYERy: &7"
-                                + info.getPlayerInfo().getOnlinePlayers() + "&8/&7" + info.getPlayerInfo().getMaxPlayers() + "&a, motd: &7" +
-                                info.getDescription().getFullText() + " &a]");
-                        p.sendMessage("$p &aSerwer odpowiedzial na ping w: &7" + (System.currentTimeMillis() - ms) + "ms");
-                        client.getSession().disconnect("zpingowano.");
+                        p.sendMessage("$p &7Успешно!. &b[ Ядро сервера: &7" + info.getVersionInfo().getVersionName() + "&b, игроков: &7"
+                                + info.getPlayerInfo().getOnlinePlayers() + "&8/&7" + info.getPlayerInfo().getMaxPlayers() + "&b, описание: &7" +
+                                info.getDescription().getFullText() + " &b]");
+                        p.sendMessage("$p &bСервер ответил на пинг за: &7" + (System.currentTimeMillis() - ms) + "ms");
+                        client.getSession().disconnect("успешно.");
                     }
                 });
                 client.getSession().connect();

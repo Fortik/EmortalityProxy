@@ -1,16 +1,16 @@
 package ru.crashdami.emortality.command.commands;
 
 import org.spacehq.mc.auth.data.GameProfile;
+import ru.crashdami.emortality.Group;
 import ru.crashdami.emortality.objects.Bot;
 import ru.crashdami.emortality.objects.Player;
 import ru.crashdami.emortality.command.Command;
-import ru.crashdami.emortality.enums.Group;
 
 public class DetachCommand extends Command {
 
     public DetachCommand() {
-        super("detach", "Отключение от бота, сервер остается на сервере", ",detach",
-                Group.PLAYER, "d", "ghost");
+        super("detach", "Отключиться от бота", ",detach",
+                Group.USER, "d", "ghost");
     }
 
     @Override
@@ -23,10 +23,10 @@ public class DetachCommand extends Command {
             p.setConnected(false);
             p.setSessionConnect(null);
             p.setLastPacketMs(0L);
-            p.setLastPacket("&cRozlaczono");
-            p.sendMessage("$p &aOdlaczono od sesji bota! :)");
+            p.setLastPacket("&c...");
+            p.sendMessage("$p &aОтключен от сеанса бота! :)");
         } else {
-            p.sendMessage("$p &cNie jestes polaczony z zadnym serwerem!");
+            p.sendMessage("$p &cВы не подключены ни к одному серверу!");
         }
     }
 }
